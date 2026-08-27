@@ -1,6 +1,6 @@
-# Todo app architecture
+# Flowstate architecture
 
-Design of the GTK4 / libadwaita desktop app: layered UI, dual persistence stores, and Debian packaging. Source tree: `src/todo/`.
+Design of the GTK4 / libadwaita desktop app: layered UI, dual persistence stores, and Debian packaging. Source tree: `src/flowstate/`.
 
 | | |
 |---|---|
@@ -16,7 +16,7 @@ One `Adw.Application` owns a single window. The window is a `ViewStack` of indep
 ## Layout
 
 ```
-src/todo/
+src/flowstate/
 ├── main.py
 ├── window.py              # Shell: ViewStack, toasts, inhibit, geometry
 ├── settings.py            # GSettings helper
@@ -41,20 +41,20 @@ See [CHANGES.md](CHANGES.md) for the 2026-08-27 architecture refactor details.
 
 ```
 todo / __main__
-    → TodoApplication (main.py)
-        → TodoWindow + ViewStack (window.py)
+    → FlowstateApplication (main.py)
+        → FlowstateWindow + ViewStack (window.py)
             → TasksPage   → TodoStore    → todos.json / todos_archive.json
             → PlannerPage → PlannerStore → planner.json
             → ClockPage   → (ephemeral; inhibit while timer runs)
                 ↓
-         ~/.local/share/io.github.thanushiyan.Todo/
+         ~/.local/share/io.github.Deadsecnote1.Flowstate/
 ```
 
 ## Module map
 
 | Module | Role | Depends on |
 |--------|------|------------|
-| `main.py` | GApplication lifecycle, About, Preferences | Adw, TodoWindow |
+| `main.py` | GApplication lifecycle, About, Preferences | Adw, FlowstateWindow |
 | `window.py` | Shell: ViewSwitcher, toasts, actions, inhibit, geometry | store, views, settings, styles |
 | `settings.py` | Load installed or compile-from-source GSettings | Gio |
 | `styles.py` | Shared application CSS | — |
@@ -93,7 +93,7 @@ Concepts: `TimerView`, `StopwatchView` (no disk I/O)
 
 ### Persistence
 
-Stores use `~/.local/share/io.github.thanushiyan.Todo/`:
+Stores use `~/.local/share/io.github.Deadsecnote1.Flowstate/`:
 
 | File | Contents |
 |------|----------|
@@ -109,7 +109,7 @@ Task list UIs rebuild children on each `refresh()` — fine for typical personal
 
 ### GSettings
 
-Schema `io.github.thanushiyan.Todo`: confirm-delete, startup-filter, last-view, window size/maximized. Source runs compile the schema into `~/.cache/.../schemas` when not installed system-wide.
+Schema `io.github.Deadsecnote1.Flowstate`: confirm-delete, startup-filter, last-view, window size/maximized. Source runs compile the schema into `~/.cache/.../schemas` when not installed system-wide.
 
 ## Design decisions
 
@@ -141,8 +141,10 @@ Planner CSS uses a Structured-inspired dark surface and coral accent (`#E8837A`)
 | `debian/*` | `dpkg-buildpackage` → `todo_*.deb` |
 | `install-local.sh` | User-local `.desktop` + icons without sudo |
 
-App id `io.github.thanushiyan.Todo` ties D-Bus uniqueness, icons, schemas, and XDG paths together.
+App id `io.github.Deadsecnote1.Flowstate` ties D-Bus uniqueness, icons, schemas, and XDG paths together.
+
+Legacy data from `io.github.thanushiyan.Todo` is copied automatically on first launch if the new data directory is empty.
 
 ---
 
-*Also available as a Cursor canvas: `docs/todo-architecture.canvas.tsx`*
+*Also available as a Cursor canvas: `docs/flowstate-architecture.canvas.tsx`*

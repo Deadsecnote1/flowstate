@@ -1,5 +1,5 @@
 project(
-  'todo',
+  'flowstate',
   version: '1.0.0',
   meson_version: '>= 0.62.0',
   default_options: ['warning_level=2', 'prefix=/usr'],
@@ -25,8 +25,8 @@ conf.set('localedir', localedir)
 conf.set('pkgdatadir', pkgdatadir)
 
 configure_file(
-  input: 'todo.in',
-  output: 'todo',
+  input: 'flowstate.in',
+  output: 'flowstate',
   configuration: conf,
   install: true,
   install_dir: bindir,
@@ -34,40 +34,40 @@ configure_file(
 )
 
 install_subdir(
-  'src/todo',
+  'src/flowstate',
   install_dir: py_installation.get_install_dir(),
   exclude_directories: ['__pycache__'],
 )
 
 install_data(
-  'data/io.github.thanushiyan.Todo.desktop',
+  'data/io.github.Deadsecnote1.Flowstate.desktop',
   install_dir: applicationsdir,
 )
 
 install_data(
-  'data/io.github.thanushiyan.Todo.metainfo.xml',
+  'data/io.github.Deadsecnote1.Flowstate.metainfo.xml',
   install_dir: metainfodir,
 )
 
 install_data(
-  'data/io.github.thanushiyan.Todo.gschema.xml',
+  'data/io.github.Deadsecnote1.Flowstate.gschema.xml',
   install_dir: schemadir,
 )
 
 foreach size : ['16', '24', '32', '48', '64', '128', '256']
   install_data(
-    'data/icons/hicolor/@0@x@0@/apps/io.github.thanushiyan.Todo.png'.format(size),
+    'data/icons/hicolor/@0@x@0@/apps/io.github.Deadsecnote1.Flowstate.png'.format(size),
     install_dir: join_paths(icondir, '@0@x@0@'.format(size), 'apps'),
   )
 endforeach
 
 install_data(
-  'data/icons/hicolor/scalable/apps/io.github.thanushiyan.Todo.svg',
+  'data/icons/hicolor/scalable/apps/io.github.Deadsecnote1.Flowstate.svg',
   install_dir: join_paths(icondir, 'scalable', 'apps'),
 )
 
 install_data(
-  'data/icons/hicolor/symbolic/apps/io.github.thanushiyan.Todo-symbolic.svg',
+  'data/icons/hicolor/symbolic/apps/io.github.Deadsecnote1.Flowstate-symbolic.svg',
   install_dir: join_paths(icondir, 'symbolic', 'apps'),
 )
 

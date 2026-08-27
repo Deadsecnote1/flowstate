@@ -4,7 +4,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-APP_ID="io.github.thanushiyan.Todo"
+APP_ID="io.github.Deadsecnote1.Flowstate"
 
 DESKTOP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
 ICON_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/icons/hicolor"
@@ -90,16 +90,16 @@ install -m 644 "$ROOT/data/icons/hicolor/symbolic/apps/${APP_ID}-symbolic.svg" \
 # Absolute Icon path is the most reliable on Cinnamon/Mint
 cat > "$DESKTOP_DIR/${APP_ID}.desktop" <<EOF
 [Desktop Entry]
-Name=Todo
-GenericName=Todo List
-Comment=A simple, modern todo list
-Exec="${ROOT}/todo"
+Name=Flowstate
+GenericName=Task list
+Comment=Tasks, planner, and clock for your desktop
+Exec="${ROOT}/flowstate"
 Path=${ROOT}
 Icon=${ICON_PNG_48}
 Terminal=false
 Type=Application
 Categories=Utility;
-Keywords=todo;tasks;checklist;reminders;
+Keywords=flowstate;tasks;tasks;checklist;reminders;
 StartupNotify=true
 EOF
 
@@ -124,5 +124,5 @@ fi
 echo "Installed menu entry: $DESKTOP_DIR/${APP_ID}.desktop"
 echo "Icon file: $ICON_PNG_48"
 echo
-echo "Open the app menu and search for: Todo"
+echo "Open the app menu and search for: Flowstate"
 echo "If the icon still looks blank, press Alt+F2, type r, press Enter (restarts Cinnamon)."

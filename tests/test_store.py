@@ -11,7 +11,7 @@ from pathlib import Path
 
 class AtomicWriteTests(unittest.TestCase):
     def test_atomic_write_roundtrip(self) -> None:
-        from todo.store.base import atomic_write_json, read_json
+        from flowstate.store.base import atomic_write_json, read_json
 
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "data.json"
@@ -19,7 +19,7 @@ class AtomicWriteTests(unittest.TestCase):
             self.assertEqual(read_json(path, {}), {"items": [1, 2]})
 
     def test_corrupt_json_returns_default_and_status(self) -> None:
-        from todo.store.base import read_json_with_status
+        from flowstate.store.base import read_json_with_status
 
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "bad.json"
@@ -34,7 +34,7 @@ class TodoStoreTests(unittest.TestCase):
         self._tmpdir = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmpdir.cleanup)
         self.data_dir = Path(self._tmpdir.name)
-        from todo.store.todo_store import TodoStore
+        from flowstate.store.todo_store import TodoStore
 
         self.TodoStore = TodoStore
 

@@ -1,4 +1,4 @@
-Source: todo
+Source: flowstate
 Section: utils
 Priority: optional
 Maintainer: Thanushiyan <Deadsecnote1@users.noreply.github.com>
@@ -16,7 +16,7 @@ Standards-Version: 4.6.2
 Homepage: https://github.com/Deadsecnote1/flowstate
 Rules-Requires-Root: no
 
-Package: todo
+Package: flowstate
 Architecture: all
 Depends:
  ${misc:Depends},
@@ -24,8 +24,8 @@ Depends:
  python3-gi,
  gir1.2-gtk-4.0,
  gir1.2-adw-1,
-Description: Tasks, daily planner, and clock (GTK4 / libadwaita)
- Todo is a clean desktop task list with a Structured-inspired daily planner
+Description: Flowstate — tasks, daily planner, and clock (GTK4 / libadwaita)
+ Flowstate is a clean desktop task list with a Structured-inspired daily planner
  and a clock page (countdown timer and stopwatch). Features include search,
  filters, archive of completed tasks, and session inhibit while a timer runs.
  Data is stored under XDG user data directories and follows the system theme.

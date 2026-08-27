@@ -16,11 +16,11 @@ notifications. Compatibility shims keep old import paths working.
 ## Phase 1 — Modular view decoupling
 
 ### Changes
-- Extracted `TasksPage` into `src/todo/views/tasks_view.py`.
-- Moved Planner UI to `src/todo/views/planner_view.py`.
-- Moved Clock UI to `src/todo/views/clock_view.py`.
-- Moved `TodoRow` to `src/todo/widgets/todo_row.py`.
-- Moved `ClockDigits` to `src/todo/widgets/clock_digits.py`.
+- Extracted `TasksPage` into `src/flowstate/views/tasks_view.py`.
+- Moved Planner UI to `src/flowstate/views/planner_view.py`.
+- Moved Clock UI to `src/flowstate/views/clock_view.py`.
+- Moved `TodoRow` to `src/flowstate/widgets/todo_row.py`.
+- Moved `ClockDigits` to `src/flowstate/widgets/clock_digits.py`.
 - Slimmed `window.py` to shell duties only:
   - `Adw.ViewStack` / `ViewSwitcher`
   - Global `Adw.ToastOverlay`
@@ -29,7 +29,7 @@ notifications. Compatibility shims keep old import paths working.
 
 ### Layout after Phase 1+4
 ```
-src/todo/
+src/flowstate/
 ├── main.py
 ├── window.py
 ├── settings.py
@@ -55,7 +55,7 @@ Compatibility shims (re-exports): `clock.py`, `planner.py`, `planner_store.py`, 
 
 ## Phase 2 — GSettings
 
-### Schema keys (`data/io.github.thanushiyan.Todo.gschema.xml`)
+### Schema keys (`data/io.github.Deadsecnote1.Flowstate.gschema.xml`)
 | Key | Purpose |
 |-----|---------|
 | `confirm-delete` | Confirm before deleting a task (wired in TasksPage) |
@@ -66,7 +66,7 @@ Compatibility shims (re-exports): `clock.py`, `planner.py`, `planner_store.py`, 
 
 ### Code
 - New `settings.py` loads installed schema, or compiles from `./data` into
-  `~/.cache/io.github.thanushiyan.Todo/schemas` for source runs.
+  `~/.cache/io.github.Deadsecnote1.Flowstate/schemas` for source runs.
 - Preferences dialog uses `get_settings()`.
 - Window restores last view and size; saves on close.
 
@@ -85,7 +85,7 @@ Compatibility shims (re-exports): `clock.py`, `planner.py`, `planner_store.py`, 
 - `store/base.py`: `Observable`, `atomic_write_json()` (temp + `os.replace`),
   `read_json()`.
 - `TodoStore` / `PlannerStore` inherit `Observable` and use atomic writes.
-- Public API: `from todo.store import TodoStore, PlannerStore, ...`
+- Public API: `from flowstate.store import TodoStore, PlannerStore, ...`
 
 ## Phase 5 — Clock reliability
 
@@ -101,13 +101,13 @@ Compatibility shims (re-exports): `clock.py`, `planner.py`, `planner_store.py`, 
 
 | Path | Action |
 |------|--------|
-| `src/todo/window.py` | Rewritten as shell |
-| `src/todo/styles.py` | New — CSS extraction |
-| `src/todo/settings.py` | New — GSettings helper |
-| `src/todo/store/*` | New package |
-| `src/todo/views/*` | New package |
-| `src/todo/widgets/*` | New package |
-| `src/todo/preferences.py` | Use settings helper |
+| `src/flowstate/window.py` | Rewritten as shell |
+| `src/flowstate/styles.py` | New — CSS extraction |
+| `src/flowstate/settings.py` | New — GSettings helper |
+| `src/flowstate/store/*` | New package |
+| `src/flowstate/views/*` | New package |
+| `src/flowstate/widgets/*` | New package |
+| `src/flowstate/preferences.py` | Use settings helper |
 | `data/*.gschema.xml` | Extended keys |
 | `ARCHITECTURE.md` | Still valid; see this file for refactor delta |
 | `CHANGES.md` | This document |
@@ -116,15 +116,23 @@ Compatibility shims (re-exports): `clock.py`, `planner.py`, `planner_store.py`, 
 
 ```bash
 cd "/path/to/todo"
-./todo
+./flowstate
 ```
 
 1. Tasks / Planner / Clock tabs still work.
 2. Delete a task with Preferences → Confirm before deleting enabled.
 3. Complete tasks → menu **Archive Completed** → check
-   `~/.local/share/io.github.thanushiyan.Todo/todos_archive.json`.
+   `~/.local/share/io.github.Deadsecnote1.Flowstate/todos_archive.json`.
 4. Start a Timer → system should resist idle suspend until pause/finish.
 5. Restart app → last view and window size restore when schemas load.
+
+## 2026-08-27 — Rebrand to Flowstate
+
+- Application display name: **Flowstate**
+- App id: `io.github.Deadsecnote1.Flowstate`
+- Python package: `src/flowstate/` (was `src/todo/`)
+- Binary / Debian package: `flowstate` (was `todo`)
+- Data: `~/.local/share/io.github.Deadsecnote1.Flowstate/` (auto-migrates from legacy `io.github.thanushiyan.Todo`)
 
 ## 2026-08-27 — GitHub identity
 
@@ -132,6 +140,6 @@ Homepage / bugtracker / Debian maintainer metadata point at
 https://github.com/Deadsecnote1/flowstate. CI also runs on `stage`.
 
 Timer duration (spins + first suggestion chip) is saved to
-`~/.local/share/io.github.thanushiyan.Todo/clock.json` and, when available,
+`~/.local/share/io.github.Deadsecnote1.Flowstate/clock.json` and, when available,
 GSettings key `timer-duration-seconds`. Closing and reopening the app restores
 the last duration instead of resetting to 1 minute.

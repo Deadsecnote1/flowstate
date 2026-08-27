@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Flowstate
+GenericName=Task list
+Comment=Tasks, planner, and clock for your desktop
+Exec=flowstate
+Icon=io.github.Deadsecnote1.Flowstate
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=flowstate;tasks;checklist;reminders;planner;clock;
+StartupNotify=true

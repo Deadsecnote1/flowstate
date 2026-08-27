@@ -8,7 +8,7 @@ override_dh_auto_test:
 	PYTHONPATH=src python3 -m unittest discover -s tests -v
 
 override_dh_auto_install:
-	find src/todo -type d -name '__pycache__' -prune -exec rm -rf {} +
+	find src/flowstate -type d -name '__pycache__' -prune -exec rm -rf {} +
 	dh_auto_install
 
 # Schemas install to /usr/share/glib-2.0/schemas via Meson.

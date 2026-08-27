@@ -1,9 +1,9 @@
 # Production readiness checklist
 
-What must be done before Todo is treated as a production release
+What must be done before Flowstate is treated as a production release
 (shippable `.deb` / Flatpak, not just “runs from source”).
 
-Artifact from last build: `dist/todo_1.0.0-1_all.deb` (also `../todo_1.0.0-1_all.deb`).
+Artifact from last build: `dist/flowstate_1.0.0-1_all.deb` (also `../flowstate_1.0.0-1_all.deb`).
 
 ---
 
@@ -23,7 +23,7 @@ Artifact from last build: `dist/todo_1.0.0-1_all.deb` (also `../todo_1.0.0-1_all
 - [x] `dh_installgsettings` pulls in gsettings backend dependency; triggers compile on install
 - [x] `settings.py` fails gracefully (unwritable cache / missing schema → `None`, prefs disabled)
 - [x] Cache compile is documented as **dev-only**
-- [ ] **You:** after `sudo apt install ./dist/todo_1.0.0-1_all.deb`, open Preferences and confirm settings persist without `~/.cache` schema compile
+- [ ] **You:** after `sudo apt install ./dist/flowstate_1.0.0-1_all.deb`, open Preferences and confirm settings persist without `~/.cache` schema compile
 
 ### 3. Rebuild packaging from the refactored tree — DONE
 
@@ -33,9 +33,9 @@ Artifact from last build: `dist/todo_1.0.0-1_all.deb` (also `../todo_1.0.0-1_all
 
 ### 4. Flatpak / Flathub-oriented manifest — DONE (build locally)
 
-- [x] Hardened `io.github.thanushiyan.Todo.json` (notifications, session inhibit talk-names, GNOME 47)
+- [x] Hardened `io.github.Deadsecnote1.Flowstate.json` (notifications, session inhibit talk-names, GNOME 47)
 - [x] `run-flatpak.sh` auto-detects available Platform version
-- [ ] **You (optional):** `flatpak-builder --user --install --force-clean build-flatpak io.github.thanushiyan.Todo.json`
+- [ ] **You (optional):** `flatpak-builder --user --install --force-clean build-flatpak io.github.Deadsecnote1.Flowstate.json`
 - [ ] Flathub submission still optional / later
 
 ### 5. Large list scale & UI responsiveness — DOCUMENTED
@@ -63,8 +63,8 @@ On Mint/Cinnamon and/or GNOME, after installing the `.deb`:
 - [ ] App menu icon visible
 
 ```bash
-sudo apt install ./dist/todo_1.0.0-1_all.deb
-# or: sudo apt install ../todo_1.0.0-1_all.deb
+sudo apt install ./dist/flowstate_1.0.0-1_all.deb
+# or: sudo apt install ../flowstate_1.0.0-1_all.deb
 todo
 ```
 
@@ -99,8 +99,8 @@ todo
 
 **Engineering side for 1.0.0 is ready** once you:
 
-1. Install `dist/todo_1.0.0-1_all.deb` and complete the smoke-test checklist above
+1. Install `dist/flowstate_1.0.0-1_all.deb` and complete the smoke-test checklist above
 2. Confirm or replace maintainer email + GitHub URL
 3. (Optional) Push to GitHub so CI runs; tag the release
 
-Dev-only cache schemas and “works from `./todo`” alone do **not** count — use the installed package for the final gate.
+Dev-only cache schemas and “works from `./flowstate`” alone do **not** count — use the installed package for the final gate.

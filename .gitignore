@@ -5,12 +5,13 @@ __pycache__/
 /build-flatpak/
 /*.deb
 /dist/
+/flowstate_*.deb
 /*.buildinfo
 /*.changes
 /debian/.debhelper/
 /debian/debhelper-build-stamp
 /debian/files
-/debian/todo/
+/debian/flowstate/
 /debian/tmp/
 /debian/*.debhelper.log
 /debian/*.substvars

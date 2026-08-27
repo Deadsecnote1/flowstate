@@ -1,7 +1,7 @@
 .PHONY: run run-flatpak install uninstall deb clean test
 
 run:
-	PYTHONPATH=src python3 -m todo
+	PYTHONPATH=src python3 -m flowstate
 
 run-flatpak:
 	./run-flatpak.sh
@@ -19,10 +19,10 @@ uninstall:
 	sudo ninja -C build uninstall
 
 deb:
-	rm -rf debian/todo debian/tmp debian/.debhelper
+	rm -rf debian/flowstate debian/tmp debian/.debhelper
 	dpkg-buildpackage -us -uc -b
 
 clean:
 	rm -rf build build-flatpak .flatpak-builder
-	rm -rf debian/todo debian/tmp debian/.debhelper debian/files debian/debhelper-build-stamp
+	rm -rf debian/flowstate debian/tmp debian/.debhelper debian/files debian/debhelper-build-stamp
 	dh_clean || true

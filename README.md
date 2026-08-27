@@ -1,6 +1,6 @@
-# Todo
+# Flowstate
 
-A modern GNOME-style todo app for Debian and other Linux desktops, built with **GTK4** and **libadwaita**.
+A modern GNOME-style desktop app for Debian and other Linux desktops, built with **GTK4** and **libadwaita**.
 
 ## Features
 
@@ -13,7 +13,7 @@ A modern GNOME-style todo app for Debian and other Linux desktops, built with **
 - **Clock** — countdown timer and stopwatch (with laps)
 - Session inhibit while a timer is running (helps avoid sleep mid-countdown)
 - Preferences via GSettings (confirm delete, default filter, window geometry)
-- Automatic save under `~/.local/share/io.github.thanushiyan.Todo/`
+- Automatic save under `~/.local/share/io.github.Deadsecnote1.Flowstate/`
 - Follows the system light/dark theme
 
 **Scale note:** the task list rebuilds on each change. That is fine for typical personal lists (a few hundred tasks). Prefer archiving completed work if the list grows very large.
@@ -36,13 +36,13 @@ sudo apt install meson ninja-build pkg-config debhelper libgtk-4-dev libadwaita-
 
 ```bash
 sudo apt install python3-gi gir1.2-gtk-4.0 gir1.2-adw-1
-chmod +x todo
-./todo
+chmod +x flowstate
+./flowstate
 ```
 
 Source runs may compile GSettings schemas into `~/.cache/...` when they are not installed system-wide. Packaged installs use `/usr/share/glib-2.0/schemas/` instead.
 
-Add **Todo** to your application menu:
+Add **Flowstate** to your application menu:
 
 ```bash
 ./install-local.sh
@@ -51,7 +51,7 @@ Add **Todo** to your application menu:
 Or:
 
 ```bash
-PYTHONPATH=src python3 -m todo
+PYTHONPATH=src python3 -m flowstate
 ```
 
 If GTK4 introspection packages are not installed but you have a GNOME Flatpak runtime:
@@ -75,15 +75,15 @@ todo
 ```bash
 sudo apt install build-essential debhelper meson ninja-build
 dpkg-buildpackage -us -uc -b
-sudo apt install ../todo_1.0.0-1_all.deb
+sudo apt install ../flowstate_1.0.0-1_all.deb
 ```
 
 ## Flatpak
 
 ```bash
 flatpak install flathub org.gnome.Sdk//47 org.gnome.Platform//47
-flatpak-builder --user --install --force-clean build-flatpak io.github.thanushiyan.Todo.json
-flatpak run io.github.thanushiyan.Todo
+flatpak-builder --user --install --force-clean build-flatpak io.github.Deadsecnote1.Flowstate.json
+flatpak run io.github.Deadsecnote1.Flowstate
 ```
 
 ## Tests

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run Todo using the GNOME Flatpak runtime when system GTK4 GIR packages
+# Run Flowstate using the GNOME Flatpak runtime when system GTK4 GIR packages
 # are not installed (common on minimal Debian/Ubuntu setups).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -16,7 +16,7 @@ fi
 
 exec flatpak run \
   --filesystem="${ROOT}:ro" \
-  --filesystem=xdg-data/io.github.thanushiyan.Todo:create \
+  --filesystem=xdg-data/io.github.Deadsecnote1.Flowstate:create \
   --share=ipc \
   --socket=session-bus \
   --socket=fallback-x11 \
@@ -25,4 +25,4 @@ exec flatpak run \
   --talk-name=org.freedesktop.Notifications \
   --command=bash \
   "org.gnome.Platform//${RUNTIME_VERSION}" \
-  -c "cd \"${ROOT}\" && PYTHONPATH=src python3 -m todo"
+  -c "cd \"${ROOT}\" && PYTHONPATH=src python3 -m flowstate"
