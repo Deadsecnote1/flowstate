@@ -117,3 +117,7 @@ Switch to the **Clock** tab in the header:
 ## License
 
 GPL-3.0-or-later
+
+## Source
+
+https://github.com/Deadsecnote1/flowstate

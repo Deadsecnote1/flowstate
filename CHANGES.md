@@ -126,7 +126,10 @@ cd "/path/to/todo"
 4. Start a Timer → system should resist idle suspend until pause/finish.
 5. Restart app → last view and window size restore when schemas load.
 
-## 2026-08-27 — Persist timer first preset
+## 2026-08-27 — GitHub identity
+
+Homepage / bugtracker / Debian maintainer metadata point at
+https://github.com/Deadsecnote1/flowstate. CI also runs on `stage`.
 
 Timer duration (spins + first suggestion chip) is saved to
 `~/.local/share/io.github.thanushiyan.Todo/clock.json` and, when available,

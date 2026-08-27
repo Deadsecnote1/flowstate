@@ -59,8 +59,8 @@ class TodoApplication(Adw.Application):
             developers=["Thanushiyan"],
             copyright="© 2026 Thanushiyan",
             license_type=Gtk.License.GPL_3_0,
-            website="https://github.com/thanushiyan/todo",
-            issue_url="https://github.com/thanushiyan/todo/issues",
+            website="https://github.com/Deadsecnote1/flowstate",
+            issue_url="https://github.com/Deadsecnote1/flowstate/issues",
             comments=(
                 "Task list, daily planner, and clock (timer / stopwatch) "
                 "for GNOME and Debian desktops. Closing the app stops timers."

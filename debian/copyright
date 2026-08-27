@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: todo
-Upstream-Contact: Thanushiyan <thanushiyan@users.noreply.github.com>
-Source: https://github.com/thanushiyan/todo
+Upstream-Contact: Thanushiyan <Deadsecnote1@users.noreply.github.com>
+Source: https://github.com/Deadsecnote1/flowstate
 
 Files: *
 Copyright: 2026 Thanushiyan

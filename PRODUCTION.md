@@ -45,11 +45,11 @@ Artifact from last build: `dist/todo_1.0.0-1_all.deb` (also `../todo_1.0.0-1_all
 
 ### 6. Release metadata & AppStream — DONE (with placeholders)
 
-- [x] Maintainer set to `thanushiyan@users.noreply.github.com` (change if you want a real address)
+- [x] Maintainer set to `Deadsecnote1@users.noreply.github.com`
 - [x] Package / AppStream / README describe Planner, Clock, archive
 - [x] Broken screenshot URLs removed until real assets exist
 - [x] Changelog updated for 1.0.0-1
-- [ ] **You:** confirm homepage `https://github.com/thanushiyan/todo` exists (or give a new URL)
+- [x] Homepage / bugtracker → `https://github.com/Deadsecnote1/flowstate`
 
 ### 7. Smoke-test matrix — NEEDS YOU
 
@@ -73,12 +73,13 @@ todo
 ## P1 — Strongly recommended — MOSTLY DONE
 
 - [x] Unit tests for store / atomic write / corrupt JSON (`make test`)
-- [x] CI workflow (`.github/workflows/ci.yml`) — runs once the repo is on GitHub
+- [x] CI workflow (`.github/workflows/ci.yml`) — green on GitHub (`Deadsecnote1/flowstate`)
 - [x] Corrupt JSON quarantined to `*.bak` + toast on load
 - [x] App shutdown clears inhibit
 - [x] Documented: closing the app stops timers
-- [ ] Git remote + tag `v1.0.0` (needs your GitHub repo)
-- [ ] Desktop smoke-test on a real machine (you)
+- [x] Git remote + tag `v1.0.0`
+- [ ] Desktop smoke-test on a real machine (you) — remaining gate
+- [ ] Optional: GitHub Release page + attach `.deb`
 
 ---
 

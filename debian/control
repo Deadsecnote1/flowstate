@@ -1,7 +1,7 @@
 Source: todo
 Section: utils
 Priority: optional
-Maintainer: Thanushiyan <thanushiyan@users.noreply.github.com>
+Maintainer: Thanushiyan <Deadsecnote1@users.noreply.github.com>
 Build-Depends:
  debhelper-compat (= 13),
  meson (>= 0.62),
@@ -13,7 +13,7 @@ Build-Depends:
  libadwaita-1-dev,
  libglib2.0-bin,
 Standards-Version: 4.6.2
-Homepage: https://github.com/thanushiyan/todo
+Homepage: https://github.com/Deadsecnote1/flowstate
 Rules-Requires-Root: no
 
 Package: todo

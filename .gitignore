@@ -12,6 +12,9 @@ __pycache__/
 /debian/files
 /debian/todo/
 /debian/tmp/
+/debian/*.debhelper.log
+/debian/*.substvars
+/obj-*/
 *.egg-info/
 .mesonpy*
 dist/

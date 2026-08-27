@@ -6,4 +6,4 @@ todo (1.0.0-1) unstable; urgency=medium
   * Modular store/views/widgets layout; atomic JSON writes.
   * Session inhibit while timer runs; Flatpak manifest included.
 
- -- Thanushiyan <thanushiyan@users.noreply.github.com>  Thu, 27 Aug 2026 17:00:00 +0530
+ -- Thanushiyan <Deadsecnote1@users.noreply.github.com>  Thu, 27 Aug 2026 17:00:00 +0530
