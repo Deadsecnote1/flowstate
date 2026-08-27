@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Todo
+GenericName=Todo List
+Comment=A simple, modern todo list
+Exec=todo
+Icon=io.github.thanushiyan.Todo
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=todo;tasks;checklist;reminders;
+StartupNotify=true

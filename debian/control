@@ -1,0 +1,31 @@
+Source: todo
+Section: utils
+Priority: optional
+Maintainer: Thanushiyan <thanushiyan@users.noreply.github.com>
+Build-Depends:
+ debhelper-compat (= 13),
+ meson (>= 0.62),
+ ninja-build,
+ pkg-config,
+ python3,
+ python3-gi,
+ libgtk-4-dev,
+ libadwaita-1-dev,
+ libglib2.0-bin,
+Standards-Version: 4.6.2
+Homepage: https://github.com/thanushiyan/todo
+Rules-Requires-Root: no
+
+Package: todo
+Architecture: all
+Depends:
+ ${misc:Depends},
+ python3,
+ python3-gi,
+ gir1.2-gtk-4.0,
+ gir1.2-adw-1,
+Description: Tasks, daily planner, and clock (GTK4 / libadwaita)
+ Todo is a clean desktop task list with a Structured-inspired daily planner
+ and a clock page (countdown timer and stopwatch). Features include search,
+ filters, archive of completed tasks, and session inhibit while a timer runs.
+ Data is stored under XDG user data directories and follows the system theme.

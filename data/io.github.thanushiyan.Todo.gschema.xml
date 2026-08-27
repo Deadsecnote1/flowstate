@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="todo">
+  <schema id="io.github.thanushiyan.Todo" path="/io/github/thanushiyan/Todo/">
+    <key name="confirm-delete" type="b">
+      <default>false</default>
+      <summary>Confirm before deleting</summary>
+      <description>Ask for confirmation when removing a task.</description>
+    </key>
+    <key name="startup-filter" type="i">
+      <default>0</default>
+      <summary>Startup filter</summary>
+      <description>0 = All, 1 = Active, 2 = Completed.</description>
+    </key>
+    <key name="last-view" type="s">
+      <default>'tasks'</default>
+      <summary>Last selected view</summary>
+      <description>One of tasks, planner, or clock.</description>
+    </key>
+    <key name="window-width" type="i">
+      <default>1100</default>
+      <summary>Window width</summary>
+      <description>Last non-maximized window width in pixels.</description>
+    </key>
+    <key name="window-height" type="i">
+      <default>720</default>
+      <summary>Window height</summary>
+      <description>Last non-maximized window height in pixels.</description>
+    </key>
+    <key name="window-maximized" type="b">
+      <default>false</default>
+      <summary>Window maximized</summary>
+      <description>Whether the main window was maximized.</description>
+    </key>
+    <key name="timer-duration-seconds" type="i">
+      <default>60</default>
+      <summary>Last timer duration</summary>
+      <description>Countdown duration in seconds; used for spins and the first preset chip.</description>
+    </key>
+  </schema>
+</schemalist>

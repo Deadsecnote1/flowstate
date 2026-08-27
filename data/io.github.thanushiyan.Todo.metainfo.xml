@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.thanushiyan.Todo</id>
+  <name>Todo</name>
+  <summary>Tasks, daily planner, and clock for the desktop</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <developer id="io.github.thanushiyan">
+    <name>Thanushiyan</name>
+  </developer>
+  <description>
+    <p>
+      Todo is a GTK4 / libadwaita app for Debian and other Linux desktops.
+      Keep a simple task list, plan your day on a timeline, and use a countdown
+      timer or stopwatch. Data is saved automatically under your XDG data directory.
+    </p>
+    <p>
+      Closing the application stops running timers. Use Archive Completed to keep
+      finished tasks in a local archive file without cluttering the active list.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.thanushiyan.Todo.desktop</launchable>
+  <url type="homepage">https://github.com/thanushiyan/todo</url>
+  <url type="bugtracker">https://github.com/thanushiyan/todo/issues</url>
+  <releases>
+    <release version="1.0.0" date="2026-08-27">
+      <description>
+        <p>Initial production-oriented release: tasks, planner, clock, archive, and packaging.</p>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1"/>
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </recommends>
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+</component>
