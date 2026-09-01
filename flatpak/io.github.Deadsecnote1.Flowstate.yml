@@ -12,11 +12,8 @@ finish-args:
   - --socket=fallback-x11
   - --socket=wayland
   - --device=dri
-  - --socket=session-bus
-  # GSettings / dconf (preferences, window state)
-  - --filesystem=xdg-run/dconf
-  - --talk-name=ca.desrt.dconf
-  # Timer finished notification
+  - --share=network
+  # Timer finished notification (GSettings uses the app’s own compiled schema)
   - --talk-name=org.freedesktop.Notifications
 
 cleanup:
@@ -36,5 +33,5 @@ modules:
     sources:
       - type: git
         url: https://github.com/Deadsecnote1/flowstate.git
-        tag: v1.1.1
-        commit: 764e1cf01f33bdbfb7eb83cc6791d688d58e82ce
+        tag: v1.1.2
+        commit: e0d26e67f34d5ae5095f625cde4eeed811860268

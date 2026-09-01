@@ -71,8 +71,10 @@ class FlowstateApplication(Adw.Application):
     def on_preferences(self, *_args) -> None:
         from flowstate.preferences import PreferencesDialog
 
-        dialog = PreferencesDialog()
-        dialog.present(self.props.active_window)
+        win = self.props.active_window
+        sync_engine = getattr(win, "sync_engine", None) if win else None
+        dialog = PreferencesDialog(sync_engine=sync_engine)
+        dialog.present(win)
 
     def create_action(self, name, callback, shortcuts=None) -> None:
         action = Gio.SimpleAction.new(name, None)

@@ -40,6 +40,7 @@ class FlowstateWindow(Adw.ApplicationWindow):
 
         self.store = TodoStore(APP_ID)
         self.planner_store = PlannerStore(APP_ID)
+        self.sync_engine = self._init_sync()
         self.tasks_page = TasksPage(self.store, startup_filter=startup_filter)
         self.tasks_page.set_settings(self.settings)
         self.tasks_page.connect("request-toast", self._on_page_toast)
@@ -56,10 +57,36 @@ class FlowstateWindow(Adw.ApplicationWindow):
         self.create_action("search", self.on_toggle_search, ["<primary>f"])
         self.create_action("clear-completed", self.on_clear_completed)
         self.create_action("archive-completed", self.on_archive_completed)
+        if self.sync_engine is not None:
+            self.create_action("sync-now", self.on_sync_now)
         self._load_css()
         self.tasks_page.focus_entry()
         self.connect("close-request", self._on_close)
         self.connect("notify::maximized", self._on_maximized_changed)
+
+    def _init_sync(self):
+        try:
+            from flowstate.sync.engine import SyncEngine
+
+            engine = SyncEngine(self.store, self.planner_store)
+            if engine.is_available() and engine.is_signed_in():
+                engine.run_sync_async(
+                    on_done=lambda msg: self.show_toast(msg, timeout=3),
+                )
+            elif engine.is_available():
+                engine._set_status("Not signed in")  # noqa: SLF001
+            elif not engine.is_available():
+                from flowstate.sync.config import is_sync_configured
+
+                if is_sync_configured():
+                    engine._set_status(  # noqa: SLF001
+                        "Install: pip install --user -r requirements-sync.txt"
+                    )
+                else:
+                    engine._set_status("Configure sync.env to enable cloud sync")  # noqa: SLF001
+            return engine
+        except Exception:
+            return None
 
     def _load_css(self) -> None:
         css = Gtk.CssProvider()
@@ -130,6 +157,8 @@ class FlowstateWindow(Adw.ApplicationWindow):
         section.append("Delete Completed", "win.clear-completed")
         menu.append_section(None, section)
         section2 = Gio.Menu()
+        if self.sync_engine is not None:
+            section2.append("Sync now", "win.sync-now")
         section2.append("Preferences", "app.preferences")
         section2.append("About Flowstate", "app.about")
         menu.append_section(None, section2)
@@ -262,3 +291,10 @@ class FlowstateWindow(Adw.ApplicationWindow):
 
     def on_archive_completed(self, *_args) -> None:
         self.tasks_page.archive_completed()
+
+    def on_sync_now(self, *_args) -> None:
+        if self.sync_engine is None:
+            return
+        self.sync_engine.run_sync_async(
+            on_done=lambda msg: self.show_toast(msg, timeout=3),
+        )
