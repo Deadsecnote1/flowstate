@@ -22,6 +22,20 @@
   <launchable type="desktop-id">io.github.Deadsecnote1.Flowstate.desktop</launchable>
   <url type="homepage">https://github.com/Deadsecnote1/flowstate</url>
   <url type="bugtracker">https://github.com/Deadsecnote1/flowstate/issues</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Task list with filters and search</caption>
+      <image>https://raw.githubusercontent.com/Deadsecnote1/flowstate/main/data/screenshots/tasks.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Daily planner timeline</caption>
+      <image>https://raw.githubusercontent.com/Deadsecnote1/flowstate/main/data/screenshots/planner.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Countdown timer and stopwatch</caption>
+      <image>https://raw.githubusercontent.com/Deadsecnote1/flowstate/main/data/screenshots/clock.png</image>
+    </screenshot>
+  </screenshots>
   <releases>
     <release version="1.0.0" date="2026-08-27">
       <description>

@@ -4,7 +4,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 # Prefer a widely available GNOME runtime; override via env if needed.
-RUNTIME_VERSION="${TODO_FLATPAK_RUNTIME:-47}"
+RUNTIME_VERSION="${FLOWSTATE_FLATPAK_RUNTIME:-48}"
 if ! flatpak info "org.gnome.Platform//${RUNTIME_VERSION}" &>/dev/null; then
   for candidate in 50 49 48 47 46; do
     if flatpak info "org.gnome.Platform//${candidate}" &>/dev/null; then

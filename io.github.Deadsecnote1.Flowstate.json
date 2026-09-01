@@ -10,12 +10,9 @@
     "--socket=wayland",
     "--socket=session-bus",
     "--device=dri",
-    "--talk-name=org.freedesktop.Notifications",
-    "--talk-name=org.gnome.SessionManager",
-    "--talk-name=org.freedesktop.ScreenSaver",
     "--filesystem=xdg-run/dconf",
-    "--filesystem=~/.config/dconf:ro",
-    "--talk-name=ca.desrt.dconf"
+    "--talk-name=ca.desrt.dconf",
+    "--talk-name=org.freedesktop.Notifications"
   ],
   "cleanup": [
     "/include",
