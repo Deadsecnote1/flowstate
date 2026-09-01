@@ -38,4 +38,4 @@ modules:
         url: https://github.com/Deadsecnote1/flowstate.git
         tag: v1.0.0
         # Replace with the exact commit SHA for tag v1.0.0 before Flathub PR:
-        commit: REPLACE_WITH_GIT_COMMIT_SHA
+        commit: 478a67d1e0d880a1356edf4c8c83768ee146f246
