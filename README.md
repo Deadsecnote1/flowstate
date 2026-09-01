@@ -83,7 +83,7 @@ sudo apt install ../flowstate_1.0.0-1_all.deb
 Local build:
 ```bash
 sudo apt install flatpak-builder
-flatpak install flathub org.gnome.Sdk//48 org.gnome.Platform//48
+flatpak install flathub org.gnome.Sdk//50 org.gnome.Platform//50
 flatpak-builder --user --install --force-clean build-flatpak io.github.Deadsecnote1.Flowstate.json
 flatpak run io.github.Deadsecnote1.Flowstate
 ```

@@ -48,7 +48,7 @@ appstreamcli validate --no-net data/io.github.Deadsecnote1.Flowstate.metainfo.xm
 Install tools:
 ```bash
 sudo apt install flatpak-builder
-flatpak install flathub org.gnome.Platform//48 org.gnome.Sdk//48
+flatpak install flathub org.gnome.Platform//50 org.gnome.Sdk//50
 ```
 
 Get commit SHA for your release tag:
@@ -153,7 +153,7 @@ Same JSON files as the `.deb` install, but under the Flatpak sandbox path.
 
 | Problem | Fix |
 |---------|-----|
-| Build fails: no meson | Uses GNOME SDK — ensure runtime 48 installed |
+| Build fails: no meson | Uses GNOME SDK — ensure runtime 50 installed |
 | GSettings / prefs broken | Check dconf finish-args in manifest |
 | No notifications | Need `org.freedesktop.Notifications` talk + session bus |
 | Screenshot URL 404 | Push PNGs to GitHub before Flathub review |

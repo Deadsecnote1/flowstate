@@ -1,9 +1,9 @@
 # Flathub manifest — submit this file via PR to https://github.com/flathub/flathub
-# Update `tag` and `commit` to match each release you publish.
+# Update `tag` and `commit` together on each release.
 
 app-id: io.github.Deadsecnote1.Flowstate
 runtime: org.gnome.Platform
-runtime-version: '48'
+runtime-version: '50'
 sdk: org.gnome.Sdk
 command: flowstate
 
@@ -36,6 +36,5 @@ modules:
     sources:
       - type: git
         url: https://github.com/Deadsecnote1/flowstate.git
-        tag: v1.0.0
-        # Replace with the exact commit SHA for tag v1.0.0 before Flathub PR:
-        commit: 478a67d1e0d880a1356edf4c8c83768ee146f246
+        tag: v1.1.1
+        commit: c541d2878c0394a3d6f888e8de956d7372f400be
