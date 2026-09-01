@@ -37,4 +37,4 @@ modules:
       - type: git
         url: https://github.com/Deadsecnote1/flowstate.git
         tag: v1.1.1
-        commit: c541d2878c0394a3d6f888e8de956d7372f400be
+        commit: 764e1cf01f33bdbfb7eb83cc6791d688d58e82ce
