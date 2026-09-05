@@ -20,6 +20,14 @@ Sync is **optional**. The app runs locally without it. Follow these steps once t
 
 This creates `tasks`, `planner_tasks`, `inbox_items`, triggers, and RLS policies.
 
+If you already ran an older `schema.sql`, also run
+[`supabase/patch_lww_client_updated_at.sql`](../supabase/patch_lww_client_updated_at.sql)
+once. That adds last-write-wins triggers so a stale device cannot overwrite a
+newer delete (or edit) in the cloud.
+
+**Sync order:** clients **pull then push**. Remote tombstones are applied locally
+before any local upsert, so deletes propagate across devices.
+
 ---
 
 ## 3. Enable Google sign-in

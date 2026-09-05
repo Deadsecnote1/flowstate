@@ -56,25 +56,70 @@ class TombstoneTests(unittest.TestCase):
             raw = json.loads((Path(tmp) / "todos.json").read_text(encoding="utf-8"))
             self.assertIsNotNone(raw["items"][0]["deleted_at"])
 
-    def test_apply_remote_task(self) -> None:
+    def test_apply_remote_tombstone_hides_task(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             from flowstate.store.todo_store import TodoStore
 
             store = TodoStore(data_dir=Path(tmp))
+            item = store.add("Will delete remotely")
+            assert item is not None
+            item_id = item.id
+            self.assertEqual(len(store.items), 1)
             applied = store.apply_remote_task(
                 {
-                    "id": "550e8400-e29b-41d4-a716-446655440000",
-                    "title": "From cloud",
+                    "id": item_id,
+                    "title": "Will delete remotely",
                     "completed": False,
                     "notes": "",
-                    "created_at": "2026-01-01T00:00:00+00:00",
-                    "client_updated_at": "2026-01-01T00:00:00+00:00",
-                    "deleted_at": None,
+                    "created_at": item.created_at,
+                    "client_updated_at": "2099-01-01T00:00:00+00:00",
+                    "deleted_at": "2099-01-01T00:00:00+00:00",
                 }
             )
             self.assertTrue(applied)
-            self.assertEqual(len(store.items), 1)
-            self.assertEqual(store.items[0].title, "From cloud")
+            self.assertEqual(len(store.items), 0)
+            raw = json.loads((Path(tmp) / "todos.json").read_text(encoding="utf-8"))
+            self.assertIsNotNone(raw["items"][0]["deleted_at"])
+
+    def test_stale_remote_does_not_overwrite_newer_local_delete(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            from flowstate.store.todo_store import TodoStore
+
+            store = TodoStore(data_dir=Path(tmp))
+            item = store.add("Local delete wins")
+            assert item is not None
+            store.remove(item.id)
+            deleted = store.get_sync_item(item.id)
+            assert deleted is not None
+            applied = store.apply_remote_task(
+                {
+                    "id": item.id,
+                    "title": "Local delete wins",
+                    "completed": False,
+                    "notes": "",
+                    "created_at": deleted.created_at,
+                    "client_updated_at": "2000-01-01T00:00:00+00:00",
+                    "deleted_at": None,
+                }
+            )
+            self.assertFalse(applied)
+            self.assertEqual(len(store.items), 0)
+            self.assertIsNotNone(store.get_sync_item(item.id).deleted_at)
+
+
+class SyncOrderTests(unittest.TestCase):
+    def test_run_sync_pulls_before_push(self) -> None:
+        """Guard against regressing to push-then-pull (resurrects deletes)."""
+        import inspect
+
+        from flowstate.sync import engine as engine_mod
+
+        source = inspect.getsource(engine_mod.SyncEngine.run_sync)
+        pull_at = source.find("self._pull(")
+        push_at = source.find("self._push(")
+        self.assertNotEqual(pull_at, -1)
+        self.assertNotEqual(push_at, -1)
+        self.assertLess(pull_at, push_at)
 
 
 class TimeutilTests(unittest.TestCase):

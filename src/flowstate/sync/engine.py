@@ -135,11 +135,13 @@ class SyncEngine:
                     msg = "Session expired — sign in again"
                     self._set_status(msg)
                     return msg
-                pushed = self._push(client, session.user_id)
+                # Pull first so remote tombstones/edits land locally before we
+                # upsert. Otherwise a stale live row can overwrite a newer delete.
                 pulled = self._pull(client)
+                pushed = self._push(client, session.user_id)
                 now = utc_now_iso()
                 self._state.save_last_sync_at(now)
-                msg = f"Synced ({pushed} pushed, {pulled} pulled)"
+                msg = f"Synced ({pulled} pulled, {pushed} pushed)"
                 self._set_status(msg)
                 return msg
             except SyncClientError as exc:

@@ -87,6 +87,37 @@ create trigger inbox_items_server_updated_at
   for each row execute function public.set_server_updated_at();
 
 -- ---------------------------------------------------------------------------
+-- Last-write-wins on client_updated_at (blocks stale upserts from resurrecting
+-- deletes). Returning NULL from BEFORE UPDATE cancels that row's update.
+-- ---------------------------------------------------------------------------
+create or replace function public.reject_stale_client_update()
+returns trigger
+language plpgsql
+as $$
+begin
+  if new.client_updated_at < old.client_updated_at then
+    return null;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists tasks_reject_stale on public.tasks;
+create trigger tasks_reject_stale
+  before update on public.tasks
+  for each row execute function public.reject_stale_client_update();
+
+drop trigger if exists planner_tasks_reject_stale on public.planner_tasks;
+create trigger planner_tasks_reject_stale
+  before update on public.planner_tasks
+  for each row execute function public.reject_stale_client_update();
+
+drop trigger if exists inbox_items_reject_stale on public.inbox_items;
+create trigger inbox_items_reject_stale
+  before update on public.inbox_items
+  for each row execute function public.reject_stale_client_update();
+
+-- ---------------------------------------------------------------------------
 -- Row Level Security
 -- ---------------------------------------------------------------------------
 alter table public.tasks enable row level security;

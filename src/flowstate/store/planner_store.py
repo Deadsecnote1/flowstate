@@ -217,11 +217,8 @@ class PlannerStore(Observable):
         return [t for t in self._tasks if not t.id.startswith("virt-")]
 
     def iter_sync_inbox_ids(self) -> list[str]:
-        return [
-            str(i.get("id"))
-            for i in self._inbox
-            if i.get("id") and not i.get("deleted_at")
-        ]
+        # Include tombstones so deletes are pushed on full-snapshot sync.
+        return [str(i.get("id")) for i in self._inbox if i.get("id")]
 
     def get_sync_inbox(self, item_id: str) -> dict | None:
         for item in self._inbox:
