@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import sys
 
+from flowstate import __version__
+
 import gi
 
 gi.require_version("Gtk", "4.0")
@@ -55,7 +57,7 @@ class FlowstateApplication(Adw.Application):
             application_name="Flowstate",
             application_icon=APP_ID,
             developer_name="Thanushiyan",
-            version="1.0.0",
+            version=__version__,
             developers=["Thanushiyan"],
             copyright="© 2026 Thanushiyan",
             license_type=Gtk.License.GPL_3_0,

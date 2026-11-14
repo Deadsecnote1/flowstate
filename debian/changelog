@@ -1,3 +1,9 @@
+flowstate (2.0.0-1) unstable; urgency=medium
+
+  * Improve clock timing, planner scheduling, and JSON recovery.
+
+ -- Thanushiyan <Deadsecnote1@users.noreply.github.com>  Sat, 14 Nov 2026 00:00:00 +0530
+
 flowstate (1.0.0-1) unstable; urgency=medium
 
   * Rebrand application as Flowstate (app id io.github.Deadsecnote1.Flowstate).

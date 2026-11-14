@@ -94,7 +94,7 @@ class TodoStore(Observable):
                 entry.setdefault("deleted_at", None)
                 items.append(TodoItem(**entry))
             self._items = items
-        except (TypeError, KeyError, ValueError):
+        except (AttributeError, TypeError, KeyError, ValueError):
             self.load_error = "todos.json had invalid task entries"
             self._items = []
             self._quarantine_corrupt(self._path)

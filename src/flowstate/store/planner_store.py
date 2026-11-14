@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import uuid
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Callable, Literal
@@ -62,6 +62,11 @@ class PlanTask:
         return max(1, self.end_min - self.start_min)
 
 
+def _occurrence_id(virtual_id: str) -> str:
+    # The same series and date must map to the same UUID on every device.
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, f"urn:flowstate:{virtual_id}"))
+
+
 class PlannerStore(Observable):
     def __init__(
         self,
@@ -117,7 +122,7 @@ class PlannerStore(Observable):
                 item.setdefault("client_updated_at", _utc_now())
                 item.setdefault("deleted_at", None)
                 self._inbox.append(item)
-        except (TypeError, KeyError, ValueError):
+        except (AttributeError, TypeError, KeyError, ValueError):
             self.load_error = "planner.json had invalid entries"
             self._tasks = []
             self._inbox = []
@@ -170,32 +175,24 @@ class PlannerStore(Observable):
     def tasks_for_day(self, day: date) -> list[PlanTask]:
         key = day.isoformat()
         result: list[PlanTask] = []
-        for task in self._active_tasks():
+        stored_ids = {task.id for task in self._tasks}
+        active = self._active_tasks()
+        series = [task for task in active if task.repeat == "daily" and task.date < key]
+        linked_ids = {_occurrence_id(f"virt-{task.id}-{key}") for task in series}
+        legacy_slots = {
+            (task.title, task.start_min) for task in active
+            if task.date == key and task.repeat == "none" and task.id not in linked_ids
+        }
+        for task in active:
             if task.date == key:
                 result.append(task)
             elif task.repeat == "daily" and task.date <= key:
-                exists = any(
-                    t.date == key
-                    and t.title == task.title
-                    and t.start_min == task.start_min
-                    for t in self._active_tasks()
-                )
-                if not exists:
-                    clone = PlanTask(
-                        id=f"virt-{task.id}-{key}",
-                        title=task.title,
-                        date=key,
-                        start_min=task.start_min,
-                        end_min=task.end_min,
-                        all_day=task.all_day,
-                        notes=task.notes,
-                        completed=False,
-                        repeat="daily",
-                        color=task.color,
-                        created_at=task.created_at,
-                        client_updated_at=task.client_updated_at,
-                    )
-                    result.append(clone)
+                virtual_id = f"virt-{task.id}-{key}"
+                if (_occurrence_id(virtual_id) not in stored_ids
+                        and (task.title, task.start_min) not in legacy_slots):
+                    result.append(replace(
+                        task, id=virtual_id, date=key, completed=False,
+                    ))
         result.sort(key=lambda t: (t.all_day, t.start_min, t.title))
         return result
 
@@ -226,32 +223,26 @@ class PlannerStore(Observable):
                 return item
         return None
 
-    def add(self, task: PlanTask) -> PlanTask:
+    def add(self, task: PlanTask, *, inbox_id: str | None = None) -> PlanTask:
+        item = self.get_sync_inbox(inbox_id) if inbox_id is not None else None
+        if item is not None and not item.get("deleted_at"):
+            item["deleted_at"] = _utc_now()
+            self._touch_inbox(item)
         self._tasks.append(task)
         self.save()
         self._emit_sync("planner_task", task.id)
+        if item is not None:
+            self._emit_sync("inbox", str(item["id"]))
         self._notify()
         return task
 
     def update(self, task: PlanTask) -> None:
         if task.id.startswith("virt-"):
-            real = PlanTask(
-                id=str(uuid.uuid4()),
-                title=task.title,
-                date=task.date,
-                start_min=task.start_min,
-                end_min=task.end_min,
-                all_day=task.all_day,
-                notes=task.notes,
-                completed=task.completed,
-                repeat="none",
-                color=task.color,
-            )
-            self._tasks.append(real)
-            self.save()
-            self._emit_sync("planner_task", real.id)
-            self._notify()
-            return
+            task = replace(task, id=_occurrence_id(task.id), repeat="none", created_at=_utc_now())
+            self._touch_task(task)
+            if self.get_sync_task(task.id) is None:
+                self.add(task)
+                return
         for i, existing in enumerate(self._tasks):
             if existing.id == task.id:
                 task.client_updated_at = _utc_now()
@@ -275,20 +266,12 @@ class PlannerStore(Observable):
 
     def toggle_complete(self, task_id: str) -> None:
         task = self.get(task_id)
-        if not task:
+        if task is None and task_id.startswith("virt-"):
+            day = date.fromisoformat(task_id[-10:])
+            task = next((t for t in self.tasks_for_day(day) if t.id == task_id), None)
+        if task is None:
             return
-        if task_id.startswith("virt-"):
-            task.completed = not task.completed
-            self.update(task)
-            return
-        real = self.get_sync_task(task_id)
-        if real is None or real.deleted_at:
-            return
-        real.completed = not real.completed
-        self._touch_task(real)
-        self.save()
-        self._emit_sync("planner_task", real.id)
-        self._notify()
+        self.update(replace(task, completed=not task.completed))
 
     def add_inbox(self, title: str) -> None:
         title = title.strip()

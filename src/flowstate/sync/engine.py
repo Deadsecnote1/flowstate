@@ -6,6 +6,8 @@ from __future__ import annotations
 import threading
 from typing import Callable
 
+from gi.repository import GLib
+
 from flowstate.store.planner_store import PlannerStore, PlanTask
 from flowstate.store.todo_store import TodoStore, TodoItem
 from flowstate.sync.auth import AuthError, sign_in_with_google, sign_out
@@ -42,7 +44,7 @@ class SyncEngine:
     def _set_status(self, text: str) -> None:
         self._status = text
         for listener in list(self._listeners):
-            listener()
+            GLib.idle_add(listener)
 
     @property
     def status_text(self) -> str:
@@ -224,8 +226,8 @@ class SyncEngine:
             if self.planner_store.apply_remote_inbox(row):
                 count += 1
         if count:
-            self.todo_store._notify()  # noqa: SLF001
-            self.planner_store._notify()  # noqa: SLF001
+            GLib.idle_add(self.todo_store._notify)  # noqa: SLF001
+            GLib.idle_add(self.planner_store._notify)  # noqa: SLF001
         return count
 
 

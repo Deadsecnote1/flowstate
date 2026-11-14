@@ -21,7 +21,7 @@ APP_ID = "io.github.Deadsecnote1.Flowstate"
 def format_hms(total_ms: int) -> str:
     """Format milliseconds as H:MM:SS or MM:SS for display."""
     total_ms = max(0, int(total_ms))
-    hours, rem = divmod(total_ms // 1000, 3600)
+    hours, rem = divmod((total_ms + 999) // 1000, 3600)
     minutes, seconds = divmod(rem, 60)
     if hours:
         return f"{hours}:{minutes:02d}:{seconds:02d}"
@@ -117,6 +117,7 @@ class TimerView(Gtk.Box):
         self.set_margin_end(16)
 
         self._remaining_ms = 0
+        self._deadline_ms = 0
         self._running = False
         self._tick_id = 0
         self._on_finished = None
@@ -311,6 +312,7 @@ class TimerView(Gtk.Box):
             self._remaining_ms = self._total_from_spins()
         if self._remaining_ms <= 0:
             return
+        self._deadline_ms = GLib.get_monotonic_time() // 1000 + self._remaining_ms
         self._running = True
         self._emit_running(True)
         self._set_spin_sensitive(False)
@@ -320,11 +322,11 @@ class TimerView(Gtk.Box):
         self._tick_id = GLib.timeout_add(100, self._tick)
 
     def _pause(self) -> None:
+        self._stop_tick()
+        if not self._tick():
+            return
         self._running = False
         self._emit_running(False)
-        if self._tick_id:
-            GLib.source_remove(self._tick_id)
-            self._tick_id = 0
         self.start_btn.set_label("Resume")
         self.start_btn.add_css_class("suggested-action")
 
@@ -349,7 +351,7 @@ class TimerView(Gtk.Box):
     def _tick(self) -> bool:
         if not self._running:
             return False
-        self._remaining_ms = max(0, self._remaining_ms - 100)
+        self._remaining_ms = max(0, self._deadline_ms - GLib.get_monotonic_time() // 1000)
         set_clock_text(self.display, format_hms(self._remaining_ms))
         if self._remaining_ms <= 0:
             self._running = False
@@ -384,6 +386,7 @@ class StopwatchView(Gtk.Box):
         self.set_margin_end(16)
 
         self._elapsed_ms = 0
+        self._started_ms = 0
         self._running = False
         self._tick_id = 0
         self._laps: list[int] = []
@@ -430,6 +433,7 @@ class StopwatchView(Gtk.Box):
         if self._running:
             self._pause()
             return
+        self._started_ms = GLib.get_monotonic_time() // 1000
         self._running = True
         self.start_btn.set_label("Pause")
         self.start_btn.remove_css_class("suggested-action")
@@ -437,6 +441,8 @@ class StopwatchView(Gtk.Box):
         self._tick_id = GLib.timeout_add(10, self._tick)
 
     def _pause(self) -> None:
+        self._elapsed_ms = self._current_elapsed_ms()
+        set_clock_text(self.display, format_stopwatch(self._elapsed_ms))
         self._running = False
         self._stop_tick()
         self.start_btn.set_label("Resume")
@@ -458,10 +464,11 @@ class StopwatchView(Gtk.Box):
     def _on_lap(self, *_args) -> None:
         if not self._running:
             return
-        self._laps.append(self._elapsed_ms)
+        elapsed_ms = self._current_elapsed_ms()
+        self._laps.append(elapsed_ms)
         n = len(self._laps)
         prev = self._laps[-2] if n > 1 else 0
-        split = self._elapsed_ms - prev
+        split = elapsed_ms - prev
         row = Gtk.ListBoxRow()
         box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
         box.set_margin_top(8)
@@ -469,7 +476,7 @@ class StopwatchView(Gtk.Box):
         box.set_margin_start(12)
         box.set_margin_end(12)
         left = Gtk.Label(label=f"Lap {n}", xalign=0, hexpand=True)
-        right = Gtk.Label(label=format_stopwatch(self._elapsed_ms), xalign=1)
+        right = Gtk.Label(label=format_stopwatch(elapsed_ms), xalign=1)
         right.add_css_class("dim-label")
         split_lbl = Gtk.Label(label=f"+{format_stopwatch(split)}", xalign=1)
         split_lbl.add_css_class("caption")
@@ -488,12 +495,15 @@ class StopwatchView(Gtk.Box):
     def _tick(self) -> bool:
         if not self._running:
             return False
-        self._elapsed_ms += 10
-        set_clock_text(self.display, format_stopwatch(self._elapsed_ms))
+        set_clock_text(self.display, format_stopwatch(self._current_elapsed_ms()))
         return True
+
+    def _current_elapsed_ms(self) -> int:
+        return self._elapsed_ms + GLib.get_monotonic_time() // 1000 - self._started_ms
 
     def dispose_timers(self) -> None:
         self._stop_tick()
+        self._running = False
 
 
 class ClockPage(Gtk.Box):

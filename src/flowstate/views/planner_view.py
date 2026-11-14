@@ -240,7 +240,9 @@ class TaskEditor(Gtk.Box):
         self._is_new = is_new
         self.title_entry.set_text(task.title)
         self.all_day.set_active(task.all_day)
-        self.daily_btn.set_active(task.repeat == "daily")
+        is_occurrence = task.id.startswith("virt-")
+        self.daily_btn.set_sensitive(not is_occurrence)
+        self.daily_btn.set_active(task.repeat == "daily" and not is_occurrence)
         self.start_hour.set_value(task.start_min // 60)
         self.start_min.set_value(task.start_min % 60)
         self.end_hour.set_value(task.end_min // 60)
@@ -350,6 +352,7 @@ class PlannerPage(Gtk.Box):
         self.set_vexpand(True)
         self.store = store or PlannerStore()
         self._day = date.today()
+        self._pending_inbox_id: str | None = None
 
         left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         left.add_css_class("planner-inbox")
@@ -470,6 +473,7 @@ class PlannerPage(Gtk.Box):
         self.inbox_entry.set_text("")
 
     def _new_task(self, *_args) -> None:
+        self._pending_inbox_id = None
         now = datetime.now()
         start = now.hour * 60 + (0 if now.minute < 30 else 30)
         task = PlanTask.create("New task", self._day, start, start + 30)
@@ -480,7 +484,8 @@ class PlannerPage(Gtk.Box):
         if not task:
             return
         if self.editor.is_new:
-            self.store.add(task)
+            self.store.add(task, inbox_id=self._pending_inbox_id)
+            self._pending_inbox_id = None
         else:
             self.store.update(task)
         self.editor.set_visible(False)
@@ -492,6 +497,7 @@ class PlannerPage(Gtk.Box):
         self.editor.set_visible(False)
 
     def _on_editor_closed(self, *_args) -> None:
+        self._pending_inbox_id = None
         self.editor.set_visible(False)
 
     def refresh(self) -> None:
@@ -556,7 +562,7 @@ class PlannerPage(Gtk.Box):
         now = datetime.now()
         start = now.hour * 60 + (0 if now.minute < 30 else 30)
         task = PlanTask.create(item["title"], self._day, start, start + 30)
-        self.store.remove_inbox(item["id"])
+        self._pending_inbox_id = item["id"]
         self.editor.open_task(task, is_new=True)
 
     def _rebuild_timeline(self) -> None:
@@ -628,6 +634,7 @@ class PlannerPage(Gtk.Box):
                     self.timeline.append(gap_lbl)
 
     def _open_task(self, _btn: Gtk.Button, task: PlanTask) -> None:
+        self._pending_inbox_id = None
         copy = PlanTask(**{**task.__dict__})
         self.editor.open_task(copy, is_new=False)
 
