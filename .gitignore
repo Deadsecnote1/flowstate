@@ -20,3 +20,7 @@ __pycache__/
 .mesonpy*
 dist/
 .venv/
+
+# Local sync configuration and session data
+sync.env
+sync_session.json

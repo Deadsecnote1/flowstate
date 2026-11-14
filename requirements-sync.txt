@@ -1,0 +1,3 @@
+# Optional — install for Google sign-in and cloud sync:
+#   pip install --user -r requirements-sync.txt
+supabase>=2.10.0,<3

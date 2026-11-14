@@ -1,3 +1,11 @@
+# Flowstate 2.0.0
+
+- Countdown and stopwatch timing use monotonic time, including pause, resume, and laps.
+- Edits to a daily planner occurrence apply to that date. Cancelling inbox scheduling preserves the inbox item.
+- Tasks and Planner recover from unexpected JSON structures.
+- Sync status and view refreshes run on the GTK main thread.
+- The Debian package declares the Cairo bindings and libadwaita 1.5 requirement.
+
 # Architecture refactor changelog
 # Date: 2026-08-27
 

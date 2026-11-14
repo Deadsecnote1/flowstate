@@ -22,8 +22,10 @@ A modern GNOME-style desktop app for Debian and other Linux desktops, built with
 
 ## Dependencies
 
+Flowstate requires libadwaita 1.5 or newer.
+
 ```bash
-sudo apt install python3 python3-gi gir1.2-gtk-4.0 gir1.2-adw-1
+sudo apt install python3 python3-gi python3-gi-cairo gir1.2-gtk-4.0 gir1.2-adw-1
 ```
 
 For building the `.deb` package also install:
@@ -67,7 +69,7 @@ meson setup build --prefix=/usr
 meson compile -C build
 sudo meson install -C build
 sudo glib-compile-schemas /usr/share/glib-2.0/schemas
-todo
+flowstate
 ```
 
 ## Build a Debian package
@@ -75,7 +77,7 @@ todo
 ```bash
 sudo apt install build-essential debhelper meson ninja-build
 dpkg-buildpackage -us -uc -b
-sudo apt install ../flowstate_1.0.0-1_all.deb
+sudo apt install ../flowstate_2.0.0-1_all.deb
 ```
 
 ## Flatpak
@@ -83,7 +85,7 @@ sudo apt install ../flowstate_1.0.0-1_all.deb
 Local build:
 ```bash
 sudo apt install flatpak-builder
-flatpak install flathub org.gnome.Sdk//48 org.gnome.Platform//48
+flatpak install flathub org.gnome.Sdk//50 org.gnome.Platform//50
 flatpak-builder --user --install --force-clean build-flatpak io.github.Deadsecnote1.Flowstate.json
 flatpak run io.github.Deadsecnote1.Flowstate
 ```

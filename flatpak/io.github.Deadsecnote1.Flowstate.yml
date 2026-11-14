@@ -1,9 +1,9 @@
 # Flathub manifest — submit this file via PR to https://github.com/flathub/flathub
-# Update `tag` and `commit` to match each release you publish.
+# Update `tag` and `commit` together on each release.
 
 app-id: io.github.Deadsecnote1.Flowstate
 runtime: org.gnome.Platform
-runtime-version: '48'
+runtime-version: '50'
 sdk: org.gnome.Sdk
 command: flowstate
 
@@ -12,11 +12,8 @@ finish-args:
   - --socket=fallback-x11
   - --socket=wayland
   - --device=dri
-  - --socket=session-bus
-  # GSettings / dconf (preferences, window state)
-  - --filesystem=xdg-run/dconf
-  - --talk-name=ca.desrt.dconf
-  # Timer finished notification
+  - --share=network
+  # Timer finished notification (GSettings uses the app’s own compiled schema)
   - --talk-name=org.freedesktop.Notifications
 
 cleanup:
@@ -36,6 +33,5 @@ modules:
     sources:
       - type: git
         url: https://github.com/Deadsecnote1/flowstate.git
-        tag: v1.0.0
-        # Replace with the exact commit SHA for tag v1.0.0 before Flathub PR:
-        commit: REPLACE_WITH_GIT_COMMIT_SHA
+        tag: v1.1.2
+        commit: e0d26e67f34d5ae5095f625cde4eeed811860268

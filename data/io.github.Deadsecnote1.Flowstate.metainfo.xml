@@ -5,7 +5,7 @@
   <summary>Tasks, daily planner, and clock for the desktop</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  <developer id="io.github.Deadsecnote1">
+  <developer id="io.github.deadsecnote1">
     <name>Thanushiyan</name>
   </developer>
   <description>
@@ -37,6 +37,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="2.0.0" date="2026-11-14">
+      <description>
+        <p>Improves clock timing, daily planner edits, inbox scheduling, and recovery from invalid task files.</p>
+      </description>
+    </release>
     <release version="1.0.0" date="2026-08-27">
       <description>
         <p>Initial production-oriented release: tasks, planner, clock, archive, and packaging.</p>

@@ -53,6 +53,13 @@ class TodoStoreTests(unittest.TestCase):
         self.assertEqual(len(payload["items"]), 1)
         self.assertEqual(payload["items"][0]["title"], "Ship release")
 
+    def test_valid_json_with_invalid_shape_sets_load_error(self) -> None:
+        path = self.data_dir / "todos.json"
+        path.write_text("[]", encoding="utf-8")
+        store = self.TodoStore(data_dir=self.data_dir)
+        self.assertIsNotNone(store.load_error)
+        self.assertEqual(store.items, [])
+
     def test_corrupt_file_sets_load_error(self) -> None:
         path = self.data_dir / "todos.json"
         path.write_text("{{{", encoding="utf-8")
